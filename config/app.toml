@@ -1,0 +1,23 @@
+[api]
+env = "development"
+port = 8081
+host = "0.0.0.0"
+
+[mysql]
+port = 3306
+database = "cake-store"
+# host = "localhost" # uncomment this if run on development
+host= "mysql" # comment this if run the api with docker compose
+username = "root"
+password = "root"
+
+# connection pool
+max_open_conn = 20
+max_idle_conn = 10
+conn_max_idle_time = 10
+conn_max_life_time = 10 # in minutes
+
+[cloudinary]
+cloud_name = "da9bihi2v"
+api_key = "198627557396921"
+secret = "CgyGDUxPdZWs6LWLeA_wXkqchuk"

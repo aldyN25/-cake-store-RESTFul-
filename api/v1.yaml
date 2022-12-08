@@ -1,0 +1,247 @@
+swagger: "2.0"
+info:
+  title: Cake Strore- OpenAPI
+  version: 2.0.0
+host: "localhost:8081"
+basePath: "/api/v1"
+tags:
+  - name: cake
+paths:
+  /cake/json:
+    post:
+      tags:
+        - cake
+      summary: Add a new cake to the store
+      operationId: addCake
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Chess Cake
+              description:
+                type: string
+                example: I want chess cake :)
+              image:
+                type: string
+                example: base64 string
+              rating:
+                type: number
+                example: 4.7
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cake"
+        "400":
+          description: Bad request
+  /cake:
+    post:
+      tags:
+        - cake
+      summary: Add a new cake to the store
+      operationId: addCake
+      consumes:
+         - multipart/form-data
+      parameters:
+        - in: formData
+          name: title
+          type: string
+          example: Chess Cake
+        - in: formData
+          name: description
+          type: string
+          example: I want chess cake :)
+        - in: formData
+          name: image
+          type: file
+          example: 
+        - in: formData
+          name: rating
+          type: number
+          example: 4.7
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cake"
+        "400":
+          description: Bad request
+    get:
+      tags:
+        - cake
+      summary: Get list cakes from the store
+      operationId: getListCake
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            default: 10
+        - name: offset
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            default: 1
+        - name: sort_by
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            default: desc
+        - name: sort
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            default: "id,title"
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Cake"
+                x-content-type: application/json
+        400:
+          description: Bad request
+  /cake/{cakeId}:
+    get:
+      tags:
+        - cake
+      summary: Find cake by id
+      operationId: findCakeByID
+      parameters:
+        - name: cakeId
+          in: path
+          description: ID of cake to return
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/Cake"
+        "400":
+          description: Bad request
+    patch:
+      tags:
+        - cake
+      summary: Update an existing cake
+      description: Update an existing cake by Id
+      operationId: updateCake
+      parameters:
+        - name: cakeId
+          in: path
+          description: cake id to update
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - in: formData
+          name: title
+          type: string
+          example: Chess Cake
+        - in: formData
+          name: description
+          type: string
+          example: I want chess cake :)
+        - in: formData
+          name: image
+          type: file
+          example: 
+        - in: formData
+          name: rating
+          type: number
+          example: 4.7
+      requestBody:
+        description: Update an existent cake in the store
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/Cake"
+        required: true
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/Cake"
+        "400":
+          description: Bad request
+        "404":
+          description: cake not found
+    delete:
+      tags:
+        - cake
+      summary: Delete a cake
+      description: delete a cake
+      operationId: deleteCake
+      parameters:
+        - name: cakeId
+          in: path
+          description: Cake id to delete
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "400":
+          description: Bad request
+definitions:
+  Cake:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 10
+      title:
+        type: string
+        example: Chess Cake
+      description:
+        type: string
+        example: I want chess cake :)
+      image:
+        type: string
+        example: https://res.cloudinary.com/dk0z4ums3/image/upload/v1661753020/attached_image/inilah-cara-merawat-anak-kucing-yang-tepat.jpg
+      rating:
+        type: number
+        example: 4.7
+      created_at:
+        type: string
+        format: date-time
+        example: "2022-11-16T17:56:27.092Z"
+      updated_at:
+        type: string
+        format: date-time
+        example: "2022-11-16T17:56:27.092Z"
